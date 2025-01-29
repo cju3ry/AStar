@@ -23,6 +23,12 @@ class Case:
         self.g = valeur_g
         self.calcul_f()
 
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
     def __repr__(self):
         """
         Représentation textuelle du case pour le débogage.
