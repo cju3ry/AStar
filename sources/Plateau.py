@@ -1,3 +1,4 @@
+import Case from Case
 class Plateau:
     def __init__(self, longueur, largeur, listeCases):
         self.longueur = longueur
