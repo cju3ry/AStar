@@ -14,8 +14,8 @@ class Plateau:
         
         self.listeCases = listeCases
 
-def getListeCases(self) :
-    return self.listeCases
+    def getListeCases(self) :
+        return self.listeCases
 
 def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk : bool) :
     if longueur > 2 | largeur > 2 | type(longueur) != int | type(largeur) != int :
