@@ -4,9 +4,11 @@ class Plateau:
     def __init__(self, longueur, largeur, listeCases):
         self.longueur = longueur
         self.largeur = largeur
+        total = self.longueur * self.largeur
 
-        if (len(listeCases) != self.longueur * self.largeur) :
-            raise ValueError("Le nombre de case est invalide")
+        if (len(listeCases)) != total :
+            raise ValueError("Le nombre de cases ne correspond pas à la taille du plateau")
+
 
         for case in listeCases :
             if (case.get_x() > self.longueur | case.get_y() > self.largeur) :
