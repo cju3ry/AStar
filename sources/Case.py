@@ -28,3 +28,27 @@ class Case:
 
     def get_y(self):
         return self.y
+
+    def __repr__(self):
+        """
+        Représentation textuelle du case pour le débogage.
+        """
+        return (f"(x={self.x}, y={self.y}, g={self.g}, h={self.h}, f={self.f}, "
+                f"char={self.char},)")
+
+# Exemple d'utilisation
+if __name__ == "__main__":
+    start = Case(0, 0,"D")
+    end = Case(5, 5,"A")
+    wall = Case(2, 2, "X")
+
+    # Définir des coûts pour un case
+    case = Case(1, 1, "O")
+    case.set_g(10)  # Exemple de coût pour arriver à ce case
+    case.calcul_heuristique(end)  # Calcul de l'heuristique
+    case.calcul_f()  # Mise à jour du coût total
+
+    print(start)
+    print(end)
+    print(wall)
+    print(case)
