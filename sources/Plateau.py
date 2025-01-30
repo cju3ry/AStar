@@ -5,12 +5,12 @@ class Plateau:
         self.longueur = longueur
         self.largeur = largeur
 
-        if (listeCases.size() + 1 != self.longueur * self.largeur) :
-            print ("erreur")
+        if (len(listeCases) != self.longueur * self.largeur) :
+            raise ValueError("Le nombre de case est invalide")
 
         for case in listeCases :
             if (case.get_x() > self.longueur | case.get_y() > self.largeur) :
-                print("erreur")
+                raise ValueError("Une des cases est en dehors du platea")
         
         self.listeCases = listeCases
 
@@ -42,5 +42,9 @@ def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk : bool) :
         elif (emplacementArrivee == i) :
             chaineEtat = chaineEtat + 'A'
         else :
-            generationMur = random.randint(tauxDeMur * 10, 10)
-            if () :
+            tauxDeMur = tauxDeMur/100
+            probaAleatoire = random.random()
+            if (probaAleatoire <= tauxDeMur) :
+                chaineEtat += 'X'
+            else:
+                chaineEtat += 'O'
