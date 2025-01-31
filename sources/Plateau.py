@@ -9,44 +9,44 @@ class Plateau:
         if (len(listeCases)) != total :
             raise ValueError("Le nombre de cases ne correspond pas à la taille du plateau")
 
-
         for case in listeCases :
-            if (case.get_x() > self.longueur | case.get_y() > self.largeur) :
-                raise ValueError("Une des cases est en dehors du platea")
+            if (case.get_x() > self.longueur or case.get_y() > self.largeur) :
+                raise ValueError("Les coordonnées de la case ne sont pas dans le plateau")
         
         self.listeCases = listeCases
 
     def getListeCases(self) :
         return self.listeCases
 
-def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk : bool) :
-    if longueur > 2 | largeur > 2 | type(longueur) != int | type(largeur) != int :
-        print("la longueur et la largeur doivent être des entiers supérieur ou égal à 3")
+def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
+    if longueur <= 2 or largeur <= 2 or type(longueur) != int or type(largeur) != int:
+        raise ValueError("La longueur et la largeur doivent être des entiers supérieurs ou égaux à 3")
 
-    if longueur == None & largeur == None :
-        longueur = random.randint(3,20)
-        largeur = random.randint(3,20)
+    if longueur is None and largeur is None:
+        longueur = random.randint(3, 20)
+        largeur = random.randint(3, 20)
 
     taillePlateau = longueur * largeur
 
-    if not departArriveeOk :
-        emplacementDepart = random.randint(0, taillePlateau)
-        emplacementArrivee = random.randint(0, taillePlateau)
-        
+    if not departArriveeOk:
+        emplacementDepart = random.randint(0, taillePlateau - 1)
+        emplacementArrivee = random.randint(0, taillePlateau - 1)
+
     chaineEtat = ""
-    for i in range(taillePlateau) :
-        if (departArriveeOk & i == 0) :
-            chaineEtat = 'D'
-        elif (departArriveeOk & taillePlateau == i) :
-            chaineEtat = chaineEtat + 'A'
-        elif (emplacementDepart == i) :
-            chaineEtat = chaineEtat + 'D'
-        elif (emplacementArrivee == i) :
-            chaineEtat = chaineEtat + 'A'
-        else :
-            tauxDeMur = tauxDeMur/100
-            probaAleatoire = random.random()
-            if (probaAleatoire <= tauxDeMur) :
+    for i in range(taillePlateau):
+        if departArriveeOk and i == 0:
+            chaineEtat += 'D'
+        elif departArriveeOk and i == taillePlateau - 1:
+            chaineEtat += 'A'
+        elif not departArriveeOk and i == emplacementDepart:
+            chaineEtat += 'D'
+        elif not departArriveeOk and i == emplacementArrivee:
+            chaineEtat += 'A'
+        else:
+            generationMur = random.randint(0, 100)
+            if generationMur < tauxDeMur:
                 chaineEtat += 'X'
             else:
                 chaineEtat += 'O'
+
+    return chaineEtat
