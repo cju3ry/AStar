@@ -48,5 +48,9 @@ def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
                 chaineEtat += 'X'
             else:
                 chaineEtat += 'O'
-
     return chaineEtat
+def rechercheCase(self, x, y):
+    for case in self.listeCases:
+        if(case.get_x() == x and case.get_y() == y):
+            return case
+    return 0
