@@ -19,8 +19,8 @@ class Plateau:
         return self.listeCases
 
 def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
-    if longueur <= 2 or largeur <= 2 or type(longueur) != int or type(largeur) != int:
-        raise ValueError("La longueur et la largeur doivent être des entiers supérieurs ou égaux à 3")
+    if longueur < 3 or largeur < 3 or type(longueur) != int or type(largeur) != int:
+        raise ValueError("La longueur et la largeur doivent être supérieures ou égales à 3")
 
     if longueur is None and largeur is None:
         longueur = random.randint(3, 20)
@@ -51,18 +51,15 @@ def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
 
     return chaineEtat
 
-def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
+def ecriture_plateau(chemin_fichier, chaine_a_ecrire, nbCol):
     """
-    Ecrit la chaîne de caractères dans un fichier texte.
-    Chaque ligne du fichier contient au maximum nbCol caractères.
+    Écrit la chaîne de caractères dans un fichier texte.
+    Chaque ligne du fichier contient exactement `nbCol` caractères.
 
     :param chemin_fichier: Chemin du fichier où écrire la chaîne.
     :param chaine_a_ecrire: Chaîne de caractères à écrire.
+    :param nbCol: Nombre de colonnes par ligne.
     """
-    # Decoupe la chaine en morceaux de taille nbCol
-    morceaux = [chaine_a_ecrire[i:i + nbCol] for i in range(0, len(chaine_a_ecrire), nbCol)]
-
-    # Ecrit chaque morceau dans le fichier
     with open(chemin_fichier, 'w', encoding='utf-8') as file:
-        for morceau in morceaux:
-            file.write(morceau + '\n')
+        for i in range(0, len(chaine_a_ecrire), nbCol):
+            file.write(chaine_a_ecrire[i:i + nbCol] + '\n')  # Ajoute un retour à la ligne

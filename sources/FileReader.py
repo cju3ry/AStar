@@ -1,4 +1,3 @@
-"""from Caractere import Caractere"""
 from Case import Case
 class FileReader:
     def __init__(self, file_path):
