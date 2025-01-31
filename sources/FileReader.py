@@ -8,7 +8,7 @@ class FileReader:
     def analyze_characters(self):
         """
         Lit le contenu du fichier et analyse chaque caractère.
-        Retourne une liste d'objets Caractere.
+        :return: Une liste de caractères, le nombre total de lignes et le nombre maximal de colonnes.
         """
         try:
             characters = []
@@ -27,9 +27,9 @@ class FileReader:
             print(f"Nombre total de colonnes : {max_columns}")
             """Retourna la liste des caractères avec un message"""
 
-            return ["test"] + characters
+            return characters, total_lines, max_columns
 
         except FileNotFoundError:
-            return [f"Erreur : Le fichier '{self.file_path}' n'existe pas."]
+            return [f"Erreur : Le fichier '{self.file_path}' n'existe pas."], 0, 0
         except IOError as e:
-            return [f"Erreur de lecture : {e}"]
+            return [f"Erreur de lecture : {e}"], 0, 0
