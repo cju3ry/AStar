@@ -36,11 +36,15 @@ def choixSuivant(caseActuelle, listeAdjacente, listeCase, Plateau, listeOuverte,
     if len(chemin) == 0 :
         chemin.append(caseActuelle)
     else :
-        if caseActuelle.get_predecesseur() != chemin[-1] :
+        for i, case in enumerate(chemin) :
+            if case == caseActuelle.get_predecesseur():
+                chemin = chemin[:i + 1]
+                chemin.append(caseActuelle)
+                break
+        else :
             chemin.clear()
             chemin.append(caseActuelle)
-        else:
-            chemin.append(caseActuelle)
+
 
     if caseActuelle == caseFin:
         return chemin
