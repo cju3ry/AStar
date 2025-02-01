@@ -13,21 +13,21 @@ def trouverDebut(listeCase):
             caseDebut = case
     return caseDebut
 
-def majListeAdjacente(caseActuelle, listeAdjacente, listeCase, Plateau):
+def majListeAdjacente(caseActuelle, listeAdjacente, Plateau):
     xActuel = caseActuelle.get_x()
     yActuel = caseActuelle.get_y()
 
-    if Plateau.rechercheCase(listeCase, xActuel + 1, yActuel) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(listeCase, xActuel + 1, yActuel))
+    if Plateau.rechercheCase(xActuel + 1, yActuel) != 0:
+        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
 
-    if Plateau.rechercheCase(listeCase, xActuel - 1, yActuel) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(listeCase, xActuel - 1, yActuel))
+    if Plateau.rechercheCase(xActuel - 1, yActuel) != 0:
+        listeAdjacente.append(Plateau.rechercheCase(xActuel - 1, yActuel))
 
-    if Plateau.rechercheCase(listeCase, xActuel, yActuel + 1) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(listeCase, xActuel + 1, yActuel))
+    if Plateau.rechercheCase(xActuel, yActuel + 1) != 0:
+        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
 
-    if Plateau.rechercheCase(listeCase, xActuel, yActuel - 1) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(listeCase, xActuel + 1, yActuel))
+    if Plateau.rechercheCase(xActuel, yActuel - 1) != 0:
+        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
 
     return listeAdjacente
 
