@@ -17,6 +17,22 @@ class Plateau:
 
     def getListeCases(self) :
         return self.listeCases
+    
+    def rechercheCase(self, x, y):
+        for case in self.listeCases:
+            if(case.get_x() == x and case.get_y() == y):
+                return case
+        return 0
+
+    def getDepart(self) :
+            for case in self.listeCases :
+                if case.get_char() == 'D' :
+                    return case
+
+    def getArrivee(self) :
+        for case in self.listeCases :
+            if case.get_char() == 'A' :
+                return case
 
 def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
     if longueur <= 2 or largeur <= 2 or type(longueur) != int or type(largeur) != int:
@@ -49,8 +65,3 @@ def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
             else:
                 chaineEtat += 'O'
     return chaineEtat
-def rechercheCase(self, x, y):
-    for case in self.listeCases:
-        if(case.get_x() == x and case.get_y() == y):
-            return case
-    return 0

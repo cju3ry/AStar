@@ -35,6 +35,9 @@ class Case:
 
     def get_predecesseur(self):
         return self.predecesseur
+    
+    def get_char(self) :
+        return self.char
 
     def __repr__(self):
         """
