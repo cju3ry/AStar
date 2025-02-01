@@ -42,6 +42,9 @@ class Case:
     def get_f(self):
         return self.f
 
+    def get_h(self):
+        return self.h
+
     def __repr__(self):
         """
         Représentation textuelle du case pour le débogage.
