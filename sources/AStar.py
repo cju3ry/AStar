@@ -45,7 +45,7 @@ def choixSuivant(caseActuelle, listeAdjacente, listeCase, Plateau, listeOuverte,
     if caseActuelle == caseFin:
         return chemin
 
-    listeAdjacente = majListeAdjacente(caseActuelle, listeAdjacente, listeCase, Plateau)
+    listeAdjacente = majListeAdjacente(caseActuelle, listeAdjacente, Plateau)
     for adjacent in listeAdjacente:
         if adjacent not in listeFerme:
             adjacent.set_g(len(chemin))
