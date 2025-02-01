@@ -26,8 +26,10 @@ print(f"Largeur: {plateau.largeur}")
 #for case in plateau.getListeCases():
 #    print(case)
 
-caseActuelle = trouverDebut(plateau.getListeCases())
-caseFin = trouverFin(plateau.getListeCases())
+#caseActuelle = trouverDebut(plateau.getListeCases())
+#caseFin = trouverFin(plateau.getListeCases())
+caseActuelle = plateau.getDepart()
+caseFin = plateau.getArrivee()
 print (f"case de départ: {caseActuelle}")
 print (f"case d'arrivée : {caseFin}")
 
@@ -36,6 +38,11 @@ listeCase = plateau.getListeCases()
 listeOuverte = []
 listeFerme = []
 chemin = []
-
-chemin = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin)
-print(chemin)
+cheminAPrendre = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin)
+for case in plateau.getListeCases():
+    print(case)
+print (f"chemin à prendre : {cheminAPrendre}")
+for case in plateau.getListeCases():
+    print(case)
+plateau.dessinerChemin(cheminAPrendre)
+plateau.afficherPlateau()
