@@ -5,7 +5,7 @@ from AStar import trouverFin, trouverDebut, majListeAdjacente, choixSuivant
 cases = [
     Case(0, 0, 'D'),
     Case(0, 1, 'O'),
-    Case(0, 2, 'X'),
+    Case(0, 2, 'O'),
     Case(1, 0, 'O'),
     Case(1, 1, 'X'),
     Case(1, 2, 'O'),
@@ -37,4 +37,5 @@ listeOuverte = []
 listeFerme = []
 chemin = []
 
-choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin)
+chemin = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin)
+print(chemin)

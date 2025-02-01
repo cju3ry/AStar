@@ -20,7 +20,7 @@ class Plateau:
     
     def rechercheCase(self, x, y):
         for case in self.listeCases:
-            if(case.get_x() == x and case.get_y() == y):
+            if(case.get_x() == x and case.get_y() == y and case.get_char() != "X"):
                 return case
         return 0
 

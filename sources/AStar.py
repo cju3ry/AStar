@@ -24,44 +24,52 @@ def majListeAdjacente(caseActuelle, listeAdjacente, Plateau):
         listeAdjacente.append(Plateau.rechercheCase(xActuel - 1, yActuel))
 
     if Plateau.rechercheCase(xActuel, yActuel + 1) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
+        listeAdjacente.append(Plateau.rechercheCase(xActuel, yActuel + 1))
 
     if Plateau.rechercheCase(xActuel, yActuel - 1) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
+        listeAdjacente.append(Plateau.rechercheCase(xActuel, yActuel - 1,))
 
     return listeAdjacente
 
 def choixSuivant(caseActuelle, listeAdjacente, listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin):
-
-    if len(chemin) == 0 :
+    if len(chemin) == 0:
         chemin.append(caseActuelle)
-    else :
-        for i, case in enumerate(chemin) :
+    else:
+        for i, case in enumerate(chemin):
             if case == caseActuelle.get_predecesseur():
                 chemin = chemin[:i + 1]
                 chemin.append(caseActuelle)
                 break
-        else :
+        else:
             chemin.clear()
             chemin.append(caseActuelle)
-
 
     if caseActuelle == caseFin:
         return chemin
 
+    listeAdjacente.clear()
     listeAdjacente = majListeAdjacente(caseActuelle, listeAdjacente, Plateau)
+
     for adjacent in listeAdjacente:
         if adjacent not in listeFerme:
             adjacent.set_g(len(chemin))
             adjacent.calcul_heuristique(caseFin)
             adjacent.calcul_f()
             adjacent.set_predecesseur(caseActuelle)
-            listeOuverte.append(adjacent)
+            if adjacent not in listeOuverte:
+                listeOuverte.append(adjacent)
+
     listeOuverte.sort(key=lambda case: case.get_f())
-    for ouverte in listeOuverte :
-        listeOuverte.remove(ouverte)
+
+    while listeOuverte:
+        ouverte = listeOuverte.pop(0)
         listeFerme.append(ouverte)
-        choixSuivant(ouverte, listeAdjacente, listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin)
+        chemin = choixSuivant(ouverte, [], listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin)
+        if chemin:
+            return chemin
+
+    return "Auncun chemin "
+
 
 
 
