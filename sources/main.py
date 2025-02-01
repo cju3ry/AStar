@@ -35,8 +35,8 @@ def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
         for morceau in morceaux:
             file.write(morceau + '\n')
 # chaine = "XXXXXXOOOOOO"
-chaine = genererPlateau(5, 5, 30, False)
-
-chemin = "C:\\Users\\adris\\Documents\\000-Cours\\000-SAE-Aetoile\\output.txt"
-nbCol = 3
-ecriture_plateeu(chemin, chaine, nbCol)
+#chaine = genererPlateau(5, 5, 30, False)
+#
+#chemin = "C:\\Cours\\rojets\\SAE_S4_Math\\Test\\test.txt"
+#nbCol = 3
+#ecriture_plateeu(chemin, chaine, nbCol)

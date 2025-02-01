@@ -12,6 +12,7 @@ class Case:
         self.h = 0
         self.f = 0
         self.char = char
+        self.predecesseur = None
 
     def calcul_heuristique(self, arrive):
         self.h = abs(self.x - arrive.x) + abs(self.y - arrive.y)
@@ -28,6 +29,12 @@ class Case:
 
     def get_y(self):
         return self.y
+
+    def set_predecesseur(self, case):
+        self.predecesseur = case
+
+    def get_predecesseur(self):
+        return self.predecesseur
 
     def __repr__(self):
         """
