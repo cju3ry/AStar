@@ -38,6 +38,9 @@ class Case:
     
     def get_char(self) :
         return self.char
+        
+    def get_f(self):
+        return self.f
 
     def __repr__(self):
         """
