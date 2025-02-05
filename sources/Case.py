@@ -1,3 +1,4 @@
+from  math import *
 class Case:
     def __init__(self, x, y, char):
         if x < 0 or y < 0:
@@ -14,8 +15,16 @@ class Case:
         self.char = char
         self.predecesseur = None
 
-    def calcul_heuristique(self, arrive):
-        self.h = abs(self.x - arrive.x) + abs(self.y - arrive.y)
+    def calcul_heuristique(self, arrive, heuristique):
+        if heuristique == "v":
+            self.h = abs(self.x - arrive.x) + abs(self.y - arrive.y)
+        elif heuristique == "e":
+            self.h = sqrt((self.x - arrive.x) ** 2 + (self.y - arrive.y) ** 2)
+        elif heuristique == "d":
+            self.h = 0
+        else :
+            raise ValueError(f"Caractère non conforme : {heuristique}. Attendu : 'v', 'e' ou 'd'.")
+
 
     def calcul_f(self):
         self.f = self.g + self.h
@@ -44,6 +53,9 @@ class Case:
 
     def get_h(self):
         return self.h
+
+    def get_g(self):
+        return self.g
 
     def __repr__(self):
         """

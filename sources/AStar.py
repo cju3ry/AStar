@@ -31,66 +31,47 @@ def majListeAdjacente(caseActuelle, listeAdjacente, Plateau):
 
     return listeAdjacente
 
-def choixSuivant(caseActuelle, listeAdjacente, listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin):
+def choixSuivant(caseActuelle, listeAdjacente, listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin, heuristique, caseDepart):
     print("=== Début de l'appel ===")
     print(f"Case actuelle: {caseActuelle}")
     print(f"Chemin actuel: {chemin}")
 
-    if len(chemin) == 0:
+    cheminFinal = []
+
+    if caseActuelle not in chemin:
         chemin.append(caseActuelle)
-        print(f"Ajout de la case actuelle au chemin (cas chemin vide): {chemin}")
-    else:
-        for i, case in enumerate(chemin):
-            if case == caseActuelle.get_predecesseur():
-                chemin = chemin[:i + 1]
-                chemin.append(caseActuelle)
-                print(f"Retour en arrière dans le chemin, ajout de {caseActuelle} après {chemin[i]}")
-                break
-        else:
-            chemin.clear()
-            chemin.append(caseActuelle)
-            print(f"Réinitialisation du chemin, ajout de {caseActuelle}: {chemin}")
 
     if caseActuelle == caseFin:
         print(f"Arrivée à la case finale: {caseActuelle}")
         print(f"Chemin final: {chemin}")
-        return chemin
 
-    print("Mise à jour de la liste des cases adjacentes...")
-    listeAdjacente.clear()
-    listeAdjacente = majListeAdjacente(caseActuelle, listeAdjacente, Plateau)
-    print(f"Liste des cases adjacentes: {listeAdjacente}")
+        while caseActuelle != caseDepart:
+            cheminFinal.append(caseActuelle)
+            caseActuelle = caseActuelle.get_predecesseur()
 
-    print("Traitement des cases adjacentes...")
+        cheminFinal.append(caseDepart)
+        cheminFinal.reverse()
+        return cheminFinal
+
+    listeAdjacente = majListeAdjacente(caseActuelle, [], Plateau)
+
     for adjacent in listeAdjacente:
-        if adjacent not in listeFerme:
-            print(f"Traitement de l'adjacente: {adjacent}")
-            print(f"Calcul de l'heuristique pour {adjacent}")
-            adjacent.set_g(len(chemin))  # Vous pouvez aussi calculer g d'une manière plus détaillée selon votre logique
-            adjacent.calcul_heuristique(caseFin)
-            print(f"Calcul de l'heuristique pour {adjacent}: {adjacent.get_h()}")
+        if adjacent not in listeFerme and adjacent not in listeOuverte:
+            adjacent.set_g(len(chemin))
+            adjacent.calcul_heuristique(caseFin, heuristique)
             adjacent.calcul_f()
             adjacent.set_predecesseur(caseActuelle)
-            if adjacent not in listeOuverte:
-                listeOuverte.append(adjacent)
-                print(f"Ajout de {adjacent} à la liste ouverte")
+            listeOuverte.append(adjacent)
 
-    # Trie de la liste ouverte uniquement par f
-    print(f"Liste ouverte avant tri: {listeOuverte}")
-    listeOuverte.sort(key=lambda case: case.get_f())
-    listeOuverte.sort(key=lambda case: case.get_h())
-    print(f"Liste ouverte après tri: {listeOuverte}")
+    listeOuverte.sort(key=lambda case: (case.get_f(), case.get_h()))
 
     while listeOuverte:
         ouverte = listeOuverte.pop(0)
-        print(f"Traitement de la case ouverte: {ouverte}")
         listeFerme.append(ouverte)
-        chemin = choixSuivant(ouverte, [], listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin)
 
-        print(f"Chemin après exploration de {ouverte}: {chemin}")
-        if chemin:
-            print("Chemin trouvé, retour du résultat")
-            return chemin
+        chemin_result = choixSuivant(ouverte, listeAdjacente, listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin[:], heuristique, caseDepart)
 
-    print("Aucun chemin trouvé")
+        if chemin_result and chemin_result != "Aucun chemin":
+            return chemin_result
+
     return "Aucun chemin"
