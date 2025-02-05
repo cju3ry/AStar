@@ -10,7 +10,7 @@ cases = [
     Case(0, 4, 'X'),
     Case(0, 5, 'X'),
     Case(0, 6, 'O'),
-    Case(0, 7, 'O'),
+    Case(0, 7, 'A'),
 
     Case(1, 0, 'O'),
     Case(1, 1, 'O'),
@@ -38,44 +38,37 @@ cases = [
     Case(3, 4, 'X'),
     Case(3, 5, 'O'),
     Case(3, 6, 'O'),
-    Case(3, 7, 'A'),
+    Case(3, 7, 'O'),
 ]
 
-# Create a Plateau object
+# Création du plateau
 plateau = Plateau(4, 8, cases)
 
-# Print the attributes of the Plateau object
-print(f"Longueur: {plateau.longueur}")
-print(f"Largeur: {plateau.largeur}")
-#print(f"case de départ: {plateau.getListeCases()[0]}")
-#print(f"case d'arrivée: {plateau.getListeCases()[8]}")
-#print("Liste des cases:")
-#for case in plateau.getListeCases():
-#    print(case)
-
-#caseActuelle = trouverDebut(plateau.getListeCases())
-#caseFin = trouverFin(plateau.getListeCases())
-caseDepart = plateau.getDepart()
+# Récupération des cases de départ et d'arrivée
 caseActuelle = plateau.getDepart()
 caseFin = plateau.getArrivee()
-print (f"case de départ: {caseActuelle}")
-print (f"case d'arrivée : {caseFin}")
+print(f"Case de départ: {caseActuelle}")
+print(f"Case d'arrivée: {caseFin}")
 
+# Initialisation des listes
 listeAdjacente = []
 listeCase = plateau.getListeCases()
 listeOuverte = []
 listeFerme = []
 chemin = []
+historique = []
 heuristique = "e"
-cheminAPrendre = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin, heuristique, caseDepart)
-for case in plateau.getListeCases():
-    print(case)
-print (f"chemin à prendre : {cheminAPrendre}")
-for case in plateau.getListeCases():
-    print(case)
-plateau.dessinerChemin(cheminAPrendre)
+caseDepart = caseActuelle
+
+#choixSuivant(caseActuelle, listeAdjacente, listeCase, Plateau, listeOuverte, listeFerme, caseFin, chemin, heuristique, caseDepart):
+
+# Recherche du chemin
+cheminAPrendre,chemin = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin,heuristique, caseDepart)
+
+# Affichage du chemin trouvé
+print(f"Chemin à prendre : {cheminAPrendre}")
+print(f"Chemin trouvé : {chemin}")
+
+# Marquage du plateau avec le chemin et les cases explorées
+plateau.dessinerChemin(cheminAPrendre, chemin)
 plateau.afficherPlateau()
-test1 = Case (0,1, "O")
-arrive = Case (0,7, "A")
-test = test1.calcul_heuristique(arrive, heuristique)
-print(test)
