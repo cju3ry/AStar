@@ -44,10 +44,14 @@ class Plateau:
         for ligne in grille:
             print(" ".join(ligne))
 
-    def dessinerChemin(self, chemin):
+    def dessinerChemin(self, chemin, historique):
+        for case in historique:
+            if case not in chemin and case.get_char() not in ['D', 'A', 'X']:
+                case.char = '*'  
+
         for case in chemin:
             if case.get_char() not in ['D', 'A', 'X']:
-                case.char = '.'
+                case.char = '.' 
 
 def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
     if longueur <= 2 or largeur <= 2 or type(longueur) != int or type(largeur) != int:
