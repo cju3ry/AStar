@@ -10,7 +10,7 @@ cases = [
     Case(0, 4, 'X'),
     Case(0, 5, 'X'),
     Case(0, 6, 'O'),
-    Case(0, 7, 'A'),
+    Case(0, 7, 'O'),
 
     Case(1, 0, 'O'),
     Case(1, 1, 'O'),
@@ -38,7 +38,7 @@ cases = [
     Case(3, 4, 'X'),
     Case(3, 5, 'O'),
     Case(3, 6, 'O'),
-    Case(3, 7, 'O'),
+    Case(3, 7, 'A'),
 ]
 
 # Create a Plateau object
@@ -55,6 +55,7 @@ print(f"Largeur: {plateau.largeur}")
 
 #caseActuelle = trouverDebut(plateau.getListeCases())
 #caseFin = trouverFin(plateau.getListeCases())
+caseDepart = plateau.getDepart()
 caseActuelle = plateau.getDepart()
 caseFin = plateau.getArrivee()
 print (f"case de départ: {caseActuelle}")
@@ -65,7 +66,8 @@ listeCase = plateau.getListeCases()
 listeOuverte = []
 listeFerme = []
 chemin = []
-cheminAPrendre = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin)
+heuristique = "e"
+cheminAPrendre = choixSuivant(caseActuelle, listeAdjacente, listeCase, plateau, listeOuverte, listeFerme, caseFin, chemin, heuristique, caseDepart)
 for case in plateau.getListeCases():
     print(case)
 print (f"chemin à prendre : {cheminAPrendre}")
@@ -75,5 +77,5 @@ plateau.dessinerChemin(cheminAPrendre)
 plateau.afficherPlateau()
 test1 = Case (0,1, "O")
 arrive = Case (0,7, "A")
-test = test1.calcul_heuristique(arrive)
+test = test1.calcul_heuristique(arrive, heuristique)
 print(test)
