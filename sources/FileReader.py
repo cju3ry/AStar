@@ -33,3 +33,18 @@ class FileReader:
             return [f"Erreur : Le fichier '{self.file_path}' n'existe pas."], 0, 0
         except IOError as e:
             return [f"Erreur de lecture : {e}"], 0, 0
+def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
+    """
+    Ecrit la chaîne de caractères dans un fichier texte.
+    Chaque ligne du fichier contient au maximum nbCol caractères.
+
+    :param chemin_fichier: Chemin du fichier où écrire la chaîne.
+    :param chaine_a_ecrire: Chaîne de caractères à écrire.
+    """
+    # Decoupe la chaine en morceaux de taille nbCol
+    morceaux = [chaine_a_ecrire[i:i + nbCol] for i in range(0, len(chaine_a_ecrire), nbCol)]
+
+    # Ecrit chaque morceau dans le fichier
+    with open(chemin_fichier, 'w', encoding='utf-8') as file:
+        for morceau in morceaux:
+            file.write(morceau + '\n')
