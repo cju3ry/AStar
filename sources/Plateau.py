@@ -52,6 +52,11 @@ class Plateau:
         for case in chemin:
             if case.get_char() not in ['D', 'A', 'X']:
                 case.char = '.' 
+    def get_chaine(self):
+        chaine = ""
+        for case in self.listeCases:
+            chaine += case.get_char()
+        return chaine
 
 def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
     if longueur <= 2 or largeur <= 2 or type(longueur) != int or type(largeur) != int:
