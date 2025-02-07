@@ -48,3 +48,14 @@ def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
     with open(chemin_fichier, 'w', encoding='utf-8') as file:
         for morceau in morceaux:
             file.write(morceau + '\n')
+
+def lecture_plateau(chemin_fichier):
+    """
+    Lit un fichier texte et retourne son contenu sous forme de chaîne de caractères.
+
+    :param chemin_fichier: Chemin du fichier à lire.
+    :return: Le contenu du fichier.
+    """
+    with open(chemin_fichier, 'r', encoding='utf-8') as file:
+        contenu = file.readlines()
+    return ''.join(contenu).replace('\n', '')
