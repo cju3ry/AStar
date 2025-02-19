@@ -1,19 +1,22 @@
 from Case import Case
 import random
+
 class Plateau:
     def __init__(self, longueur, largeur, listeCases):
-        self.longueur = longueur
-        self.largeur = largeur
+        self.longueur = longueur  # Nombre de colonnes
+        self.largeur = largeur  # Nombre de lignes
         self.cases_dico = {}
         self.total = self.longueur * self.largeur
 
         if len(listeCases) != self.total:
+            print("Test : " + str(self.total) + "l" + str(longueur) + "L" + str(largeur))
             raise ValueError("Le nombre de cases ne correspond pas à la taille du plateau")
 
         for case in listeCases:
-            if case.get_x() > self.longueur or case.get_y() > self.largeur:
+            x, y = case.get_x(), case.get_y()
+            if x >= self.longueur or y >= self.largeur:  # Vérification correcte des limites
                 raise ValueError("Les coordonnées de la case ne sont pas dans le plateau")
-            self.cases_dico[(case.get_x(), case.get_y())] = case
+            self.cases_dico[(x, y)] = case
 
     def getListeCases(self):
         return list(self.cases_dico.values())
@@ -35,14 +38,15 @@ class Plateau:
                 return case
 
     def afficherPlateau(self):
-        # Création de la grille à afficher
-        grille = [[' ' for _ in range(self.largeur)] for _ in range(self.longueur)]
+        # Initialisation correcte de la grille (largeur = lignes, longueur = colonnes)
+        grille = [[' ' for _ in range(self.longueur)] for _ in range(self.largeur)]
 
-        # Remplir la grille avec les caractères des cases
+        # Remplissage de la grille avec les caractères des cases
         for case in self.cases_dico.values():
-            grille[case.get_x()][case.get_y()] = case.get_char()
+            x, y = case.get_x(), case.get_y()
+            grille[y][x] = case.get_char()  # y = ligne, x = colonne
 
-        # Affichage de la grille
+        # Affichage de la grille ligne par ligne
         for ligne in grille:
             print(" ".join(ligne))
 
@@ -56,29 +60,21 @@ class Plateau:
                 case.char = '.'
 
     def get_chaine(self):
-        chaine = ""
-        for case in self.getListeCases() :
-            chaine += case.get_char()
-        return chaine
-
-
+        return "".join(case.get_char() for case in self.getListeCases())
 
 # Fonction pour générer un plateau avec un taux de mur et une configuration de départ/arrivée
 def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
-    if longueur <= 2 or largeur <= 2 or type(longueur) != int or type(largeur) != int:
+    if longueur < 3 or largeur < 3 or not isinstance(longueur, int) or not isinstance(largeur, int):
         raise ValueError("La longueur et la largeur doivent être des entiers supérieurs ou égaux à 3")
 
-    if longueur is None and largeur is None:
-        longueur = random.randint(3, 20)
-        largeur = random.randint(3, 20)
-
     taillePlateau = longueur * largeur
+    chaineEtat = ""
 
+    # Placement aléatoire du départ et de l'arrivée
     if not departArriveeOk:
         emplacementDepart = random.randint(0, taillePlateau - 1)
         emplacementArrivee = random.randint(0, taillePlateau - 1)
 
-    chaineEtat = ""
     for i in range(taillePlateau):
         if departArriveeOk and i == 0:
             chaineEtat += 'D'
@@ -89,9 +85,6 @@ def genererPlateau(longueur, largeur, tauxDeMur, departArriveeOk: bool):
         elif not departArriveeOk and i == emplacementArrivee:
             chaineEtat += 'A'
         else:
-            generationMur = random.randint(0, 100)
-            if generationMur < tauxDeMur:
-                chaineEtat += 'X'
-            else:
-                chaineEtat += 'O'
+            chaineEtat += 'X' if random.randint(0, 100) < tauxDeMur else 'O'
+
     return chaineEtat

@@ -1,5 +1,5 @@
-"""from Caractere import Caractere"""
 from Case import Case
+
 class FileReader:
     def __init__(self, file_path):
         """Initialise la classe avec le chemin du fichier."""
@@ -21,19 +21,20 @@ class FileReader:
                     total_lines += 1
                     max_columns = max(max_columns, len(line))
                     for col_num, char in enumerate(line, start=0):  # Numérotation des colonnes commence à 0
-                        characters.append(Case(line_num, col_num, char))
+                        # Inversion des coordonnées (x, y) : y pour les lignes, x pour les colonnes
+                        characters.append(Case(col_num, line_num, char))  # x = colonne, y = ligne
 
             print(f"Nombre total de lignes : {total_lines }")
             print(f"Nombre total de colonnes : {max_columns}")
-            """Retourna la liste des caractères avec un message"""
-
+            """Retourne la liste des caractères avec un message"""
             return characters, total_lines, max_columns
 
         except FileNotFoundError:
             return [f"Erreur : Le fichier '{self.file_path}' n'existe pas."], 0, 0
         except IOError as e:
             return [f"Erreur de lecture : {e}"], 0, 0
-def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
+
+def ecriture_plateau(chemin_fichier, chaine_a_ecrire, nbCol):
     """
     Ecrit la chaîne de caractères dans un fichier texte.
     Chaque ligne du fichier contient au maximum nbCol caractères.
@@ -41,7 +42,7 @@ def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
     :param chemin_fichier: Chemin du fichier où écrire la chaîne.
     :param chaine_a_ecrire: Chaîne de caractères à écrire.
     """
-    # Decoupe la chaine en morceaux de taille nbCol
+    # Découpe la chaîne en morceaux de taille nbCol
     morceaux = [chaine_a_ecrire[i:i + nbCol] for i in range(0, len(chaine_a_ecrire), nbCol)]
 
     # Ecrit chaque morceau dans le fichier
@@ -51,11 +52,18 @@ def ecriture_plateeu(chemin_fichier, chaine_a_ecrire, nbCol):
 
 def lecture_plateau(chemin_fichier):
     """
-    Lit un fichier texte et retourne son contenu sous forme de chaîne de caractères.
+    Lit un fichier texte et retourne son contenu sous forme de chaîne de caractères,
+    ainsi que le nombre de lignes et le nombre de colonnes.
 
     :param chemin_fichier: Chemin du fichier à lire.
-    :return: Le contenu du fichier.
+    :return: Le contenu du fichier sous forme de chaîne de caractères,
+             le nombre de lignes et le nombre de colonnes.
     """
     with open(chemin_fichier, 'r', encoding='utf-8') as file:
-        contenu = file.readlines()
-    return ''.join(contenu).replace('\n', '')
+        lignes = file.readlines()
+
+    contenu = ''.join(lignes).replace('\n', '')
+    nombre_lignes = len(lignes)
+    nombre_colonnes = len(contenu) // nombre_lignes  # Calcul du nombre de colonnes correctement
+
+    return contenu, nombre_lignes, nombre_colonnes

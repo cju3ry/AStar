@@ -1,7 +1,7 @@
 import os
 
 from Case import Case
-from FileReader import ecriture_plateeu, lecture_plateau
+from FileReader import ecriture_plateau, lecture_plateau
 from Plateau import Plateau, genererPlateau
 from AStar import choixSuivant
 
@@ -30,8 +30,8 @@ def afficher_menu():
 
         while True:
             try:
-                taille_x = int(input("Entrez la largeur du plateau (X): "))
-                if taille_x > 0:
+                taille_y = int(input("Entrez le nombre de colonne du plateau (Y): "))
+                if taille_y > 0:
                     break
                 else:
                     print("La largeur doit être un entier positif.")
@@ -40,8 +40,8 @@ def afficher_menu():
 
         while True:
             try:
-                taille_y = int(input("Entrez la longueur du plateau (Y): "))
-                if taille_y > 0:
+                taille_x = int(input("Entrez le nombre de ligne du plateau du plateau (X): "))
+                if taille_x > 0:
                     break
                 else:
                     print("La longueur doit être un entier positif.")
@@ -87,16 +87,20 @@ def afficher_menu():
         else:
             print("Chemin de dossier invalide. Veuillez entrer un chemin valide.")
 
-    return a_un_plateau, fichier_entree, taille_x, taille_y, taux_murs, heuristique, aleatoire, fichier_avant, fichier_apres
+    return a_un_plateau, fichier_entree, taille_y, taille_x, taux_murs, heuristique, aleatoire, fichier_avant, fichier_apres
 
 def resoudre_plateau_entre(fichier_entree, fichier_avant, fichier_apres):
-    chaine_plateau = lecture_plateau(fichier_entree)
-    taille_x = taille_y = int(len(chaine_plateau) ** 0.5)
+    chaine_plateau, taille_y, taille_x  = lecture_plateau(fichier_entree)
 
     # Debugging: Print the generated or read plateau string
     print("Chaine plateau:", chaine_plateau)
 
-    cases = [Case(i // taille_y, i % taille_y, char) for i, char in enumerate(chaine_plateau)]
+    cases = []
+    for i, char in enumerate(chaine_plateau):
+        y = i // taille_x  # Calcule la ligne (attention à l'ordre de taille_x et taille_y)
+        x = i % taille_x   # Calcule la colonne
+        cases.append(Case(x, y, char))  # Création de l'objet Case et ajout à la liste
+
     plateau = Plateau(taille_x, taille_y, cases)
 
     # Afficher le plateau généré
@@ -104,7 +108,7 @@ def resoudre_plateau_entre(fichier_entree, fichier_avant, fichier_apres):
     plateau.afficherPlateau()
 
     # Sauvegarde le plateau avant résolution
-    ecriture_plateeu(fichier_avant, chaine_plateau, taille_x)
+    ecriture_plateau(fichier_avant, chaine_plateau, taille_x)
 
     # Récupération des cases de départ et d'arrivée
     caseActuelle = plateau.getDepart()
@@ -139,16 +143,16 @@ def resoudre_plateau_entre(fichier_entree, fichier_avant, fichier_apres):
     plateau.afficherPlateau()
 
     # Sauvegarder le plateau après résolution
-    ecriture_plateeu(fichier_apres, plateau.get_chaine(), taille_x)
+    ecriture_plateau(fichier_apres, plateau.get_chaine(), taille_x)
 
 def resoudre_plateau_genere(taille_x, taille_y, taux_murs, heuristique, aleatoire, fichier_avant, fichier_apres):
     # Génére un plateau avec un taux de murs donné
-    chaine_plateau = genererPlateau(taille_x, taille_y, taux_murs, not aleatoire)
+    chaine_plateau = genererPlateau(taille_y, taille_x, taux_murs, not aleatoire)
 
     # Debugging: Print the generated or read plateau string
     print("Chaine plateau:", chaine_plateau)
 
-    cases = [Case(i // taille_y, i % taille_y, char) for i, char in enumerate(chaine_plateau)]
+    cases = [Case(i % taille_x, i // taille_x, char) for i, char in enumerate(chaine_plateau)]  # Correction des coordonnées
     plateau = Plateau(taille_x, taille_y, cases)
 
     # Afficher le plateau généré
@@ -156,7 +160,7 @@ def resoudre_plateau_genere(taille_x, taille_y, taux_murs, heuristique, aleatoir
     plateau.afficherPlateau()
 
     # Sauvegarde le plateau avant résolution
-    ecriture_plateeu(fichier_avant, chaine_plateau, taille_x)
+    ecriture_plateau(fichier_avant, chaine_plateau, taille_x)
 
     # Récupération des cases de départ et d'arrivée
     caseActuelle = plateau.getDepart()
@@ -192,10 +196,15 @@ def resoudre_plateau_genere(taille_x, taille_y, taux_murs, heuristique, aleatoir
     plateau.afficherPlateau()
 
     # Sauvegarder le plateau après résolution
-    ecriture_plateeu(fichier_apres, plateau.get_chaine(), taille_x)
+    print(plateau.get_chaine())
+    print(taille_x)
+    ecriture_plateau(fichier_apres, plateau.get_chaine(), taille_x)
 
 # Utilisation du menu pour obtenir les paramètres
 a_un_plateau, fichier_entree, taille_x, taille_y, taux_murs, heuristique, aleatoire, fichier_avant, fichier_apres = afficher_menu()
+
+# Vérification des tailles avant d'appeler les fonctions
+print(f"taille_x = {taille_x}, taille_y = {taille_y}")
 
 # Appel de la méthode appropriée en fonction du choix de l'utilisateur
 if a_un_plateau:
