@@ -9,6 +9,8 @@ from AStar import choixSuivant
 def afficher_menu():
     print("=== Menu de configuration du plateau ===")
 
+    # TODO refactor WHILE TRUE
+
     while True:
         a_un_plateau = input("Avez-vous un plateau à entrer? (oui/non): ").strip().lower()
         if a_un_plateau in ['oui', 'non']:
@@ -92,12 +94,11 @@ def afficher_menu():
 def resoudre_plateau_entre(fichier_entree, fichier_avant, fichier_apres):
     chaine_plateau, taille_y, taille_x  = lecture_plateau(fichier_entree)
 
-    # Debugging: Print the generated or read plateau string
     print("Chaine plateau:", chaine_plateau)
 
     cases = []
     for i, char in enumerate(chaine_plateau):
-        y = i // taille_x  # Calcule la ligne (attention à l'ordre de taille_x et taille_y)
+        y = i // taille_x  # Calcule la ligne
         x = i % taille_x   # Calcule la colonne
         cases.append(Case(x, y, char))  # Création de l'objet Case et ajout à la liste
 
@@ -127,6 +128,8 @@ def resoudre_plateau_entre(fichier_entree, fichier_avant, fichier_apres):
     # Recherche du chemin
     try:
         cheminAPrendre, chemin = choixSuivant(caseActuelle, plateau, listeOuverte, listeFerme, caseFin, chemin, heuristique)
+
+        # TODO rajouter le if si pas de chemin 
     except RecursionError:
         print("RecursionError: maximum recursion depth exceeded. Retrying...")
         return None
@@ -149,7 +152,6 @@ def resoudre_plateau_genere(taille_x, taille_y, taux_murs, heuristique, aleatoir
     # Génére un plateau avec un taux de murs donné
     chaine_plateau = genererPlateau(taille_y, taille_x, taux_murs, not aleatoire)
 
-    # Debugging: Print the generated or read plateau string
     print("Chaine plateau:", chaine_plateau)
 
     cases = [Case(i % taille_x, i // taille_x, char) for i, char in enumerate(chaine_plateau)]  # Correction des coordonnées

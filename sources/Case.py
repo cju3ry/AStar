@@ -1,6 +1,13 @@
 from  math import *
 class Case:
     def __init__(self, x, y, char):
+        """
+        Création du constructeur de la classe case
+        Arguments : 
+        - x et y => les coordonées
+        - char => le charactère de la case
+        
+        """
         if x < 0 or y < 0:
             raise ValueError("Les valeurs des coordonnées (x et y) ne doivent pas être négatives !")
 
@@ -9,13 +16,19 @@ class Case:
 
         self.x = x
         self.y = y
-        self.g = 0
-        self.h = 0
-        self.f = 0
+        self.g = 0 # Le plus court chemin depuis le départ
+        self.h = 0 # L'heuristique depuis la case
+        self.f = 0 # L'addition de g et h 
         self.char = char
-        self.predecesseur = None
+        self.predecesseur = None # Case dont laquelle la case actuelle est fille 
 
     def calcul_heuristique(self, arrive, heuristique):
+        """
+        Méthode permettant le  calcul de l'heuristique en fonction de celle choisit
+        Argumment : 
+        - arrive => la case d'arrivée
+        - heuristique => un charactère représentant l'heuristique chosit (v,d ou e)
+        """
         if heuristique == "v":
             self.h = abs(self.x - arrive.x) + abs(self.y - arrive.y)
         elif heuristique == "e":
@@ -31,7 +44,7 @@ class Case:
 
     def set_g(self, valeur_g):
         self.g = valeur_g
-        self.calcul_f()
+        self.calcul_f()     #TODO a enlever
 
     def get_x(self):
         return self.x
