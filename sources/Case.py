@@ -4,8 +4,8 @@ class Case:
         """
         Création du constructeur de la classe case
         Arguments : 
-        - x et y => les coordonées
-        - char => le charactère de la case
+        - x et y → les coordonnées
+        — char → le caractère de la case
         
         """
         if x < 0 or y < 0:
@@ -18,16 +18,16 @@ class Case:
         self.y = y
         self.g = 0 # Le plus court chemin depuis le départ
         self.h = 0 # L'heuristique depuis la case
-        self.f = 0 # L'addition de g et h 
+        self.f = 0 # L'addition de g et h
         self.char = char
         self.predecesseur = None # Case dont laquelle la case actuelle est fille 
 
     def calcul_heuristique(self, arrive, heuristique):
         """
-        Méthode permettant le  calcul de l'heuristique en fonction de celle choisit
-        Argumment : 
-        - arrive => la case d'arrivée
-        - heuristique => un charactère représentant l'heuristique chosit (v,d ou e)
+        Méthode permettant le calcul de l'heuristique en fonction de celle choisie
+        Argument :
+        – arrive → la case d'arrivée
+        — heuristique → un caractère représentant l'heuristique choisit (v, d ou e)
         """
         if heuristique == "v":
             self.h = abs(self.x - arrive.x) + abs(self.y - arrive.y)
@@ -44,7 +44,6 @@ class Case:
 
     def set_g(self, valeur_g):
         self.g = valeur_g
-        self.calcul_f()     #TODO a enlever
 
     def get_x(self):
         return self.x

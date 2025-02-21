@@ -3,21 +3,15 @@ from Plateau import Plateau
 
 def majListeAdjacente(caseActuelle, listeAdjacente, Plateau):
     """
-    Méthode permettant de récupérer la liste de toutes les cases adjascentes existante de la case actuelle
-    Paramètre : 
-    - La case Actuelle
-    - La liste adjacente déja exisitante
+    Méthode permettant de récupérer la liste de toutes les cases adjacentes existante de la case actuelle en +-x et +-y
+    Paramètre
+    – La case Actuelle
+    - La liste adjacente déja existent
     - Le plateau
-    Return : la liste des cases adjascentes
+    Return : la liste des cases adjacentes
     """
     xActuel = caseActuelle.get_x()
     yActuel = caseActuelle.get_y()
-
-    if Plateau.rechercheCase(xActuel + 1, yActuel) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
-
-    if Plateau.rechercheCase(xActuel - 1, yActuel) != 0:
-        listeAdjacente.append(Plateau.rechercheCase(xActuel - 1, yActuel))
 
     if Plateau.rechercheCase(xActuel, yActuel + 1) != 0:
         listeAdjacente.append(Plateau.rechercheCase(xActuel, yActuel + 1))
@@ -25,21 +19,27 @@ def majListeAdjacente(caseActuelle, listeAdjacente, Plateau):
     if Plateau.rechercheCase(xActuel, yActuel - 1) != 0:
         listeAdjacente.append(Plateau.rechercheCase(xActuel, yActuel - 1,))
 
+    if Plateau.rechercheCase(xActuel + 1, yActuel) != 0:
+        listeAdjacente.append(Plateau.rechercheCase(xActuel + 1, yActuel))
+
+    if Plateau.rechercheCase(xActuel - 1, yActuel) != 0:
+        listeAdjacente.append(Plateau.rechercheCase(xActuel - 1, yActuel))
+
     return listeAdjacente
 
 
-def choixSuivant(caseActuelle, Plateau, listeOuverte, listeFerme, caseFin, chemin, heuristique):
+def choixSuivant(caseActuelle, Plateau, listeOuverte, listeFerme, caseFin, heuristique):
     """
-    Méthode permettant de calculé le plus court chemin en fonction de l'heuristique choisie
+    Méthode permettant de calculer le plus court chemin en fonction de l'heuristique choisie
 
-    Arguments : 
-    - caseActuelle : la case courante 
+    Arguments
+    – caseActuelle : la case courante
     - Plateau : le plateau initialisé 
-    - listeOuverte : la liste des cases que l'on doit parcourir
-    - listeFerme : la liste avec toutes les cases déjà parcourues
-    - caseFin : la case de fin ("A")
-    - chemin : la liste des cases où ont est passés
-    - heuristique : l'heuristique choisie
+    — listeOuverte : la liste des cases que l'on doit parcourir
+    — listeFerme : la liste avec toutes les cases déjà parcourues
+    — caseFin : la case de fin ("A").
+    - Chemin : la liste des cases avec lesquelles on est passés
+    — heuristique : l'heuristique choisie
 
     """
 
@@ -57,8 +57,6 @@ def choixSuivant(caseActuelle, Plateau, listeOuverte, listeFerme, caseFin, chemi
 
         # Ajout de la case actuelle à la liste fermée pour ne pas y repasser.
         listeFerme.append(caseActuelle)
-        if caseActuelle not in chemin:  #TODO a enlever
-            chemin.append(caseActuelle)
 
         # Si la case actuelle correspond a la case de fin
         if caseActuelle == caseFin:
@@ -69,7 +67,7 @@ def choixSuivant(caseActuelle, Plateau, listeOuverte, listeFerme, caseFin, chemi
                 cheminFinal.append(caseActuelle)
                 caseActuelle = caseActuelle.get_predecesseur()
             
-            return cheminFinal, chemin  # TODO mettre listeFerme
+            return cheminFinal, listeFerme
 
         # Suppression de la première case de la liste ouverte.
         listeOuverte.pop(0)
@@ -77,24 +75,19 @@ def choixSuivant(caseActuelle, Plateau, listeOuverte, listeFerme, caseFin, chemi
         # Mise à jour de la liste d'adjacence
         listeAdjacente = majListeAdjacente(caseActuelle, [], Plateau)
 
-        # On parcours la liste d'adjacence
+        # On parcourt la liste d'adjacence
         for adjacent in listeAdjacente:
             if adjacent not in listeFerme:
 
-                # Si la case n'est pas dans la liste fermée on calcule son g grâce au g de son "prédecesseur".
-                nouveau_g = caseActuelle.get_g() + 1        # TODO a bouger
-
-
                 if adjacent not in listeOuverte :
 
-                    # Si la case n'est pas dans la liste ouverte, on calcule l'heuristique et f, et on modifie le prédecesseur
-                    
-                    # TODO revoir l'ordre 
-                    adjacent.set_g(nouveau_g)       
-                    adjacent.calcul_heuristique(caseFin, heuristique)
-                    adjacent.calcul_f()
-                    adjacent.set_predecesseur(caseActuelle)
+                    # Si la case n'est pas dans la liste ouverte, , le nouveau g, et f, enfin, on modifie le prédecesseur.
 
-                    if adjacent not in listeOuverte:    # TODO A enlever
-                        listeOuverte.append(adjacent)
+                    nouveau_g = caseActuelle.get_g() + 1 # on calcule le nouveau g
+                    adjacent.set_g(nouveau_g)  # on set le nouveau g
+                    adjacent.calcul_heuristique(caseFin, heuristique) #on calcule l'heuristique en fonction de celle choisie
+                    adjacent.calcul_f() #mise à jour de f après la modif de g et h
+                    adjacent.set_predecesseur(caseActuelle) # création des prédécesseurs avec la case actuelle comme prédécesseur de la future case (adjascent)
+                    listeOuverte.append(adjacent) # ajout dans la liste ouverte, car a traité
+
     return [], []   # On retourne deux tableaux vides, si aucune solution n'est trouvée.
