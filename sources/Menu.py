@@ -172,9 +172,6 @@ def resoudre_plateau_genere(taille_x, taille_y, taux_murs, heuristique, aleatoir
 # Utilisation du menu pour obtenir les paramètres
 a_un_plateau, fichier_entree, taille_x, taille_y, taux_murs, heuristique, aleatoire, fichier_avant, fichier_apres = afficher_menu()
 
-# Vérification des tailles avant d'appeler les fonctions
-print(f"taille_x = {taille_x}, taille_y = {taille_y}")
-
 # Appel de la méthode appropriée en fonction du choix de l'utilisateur
 if a_un_plateau:
     resoudre_plateau_entre(fichier_entree, fichier_avant, fichier_apres)
